@@ -12,7 +12,7 @@ if (isset($_SESSION['username'])) {
 $host = "localhost";
 $db_username = "root";
 $db_password = "admin";
-$database = "database2"; 
+$database = "database2";
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -33,21 +33,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Connection failed: " . $conn->connect_error);
         }
 
-        // Prepare a SQL query to fetch the user's password from the database
-        $sql = "SELECT password FROM users WHERE username = '$username'";
+        // Prepare a SQL query to fetch the user's password and role from the database
+        $sql = "SELECT password, role FROM users WHERE username = '$username'";
 
         // Execute the query
         $result = $conn->query($sql);
 
         if ($result && $result->num_rows > 0) {
-            // Fetch the password from the result set
+            // Fetch the password and role from the result set
             $row = $result->fetch_assoc();
             $hashed_password = $row["password"];
+            $role = $row["role"];
 
             // Verify the submitted password against the hashed password
             if (password_verify($password, $hashed_password)) {
-                // Set the session variable and redirect to the dashboard page 
+                // Set the session variables and redirect to the dashboard page 
                 $_SESSION['username'] = $username;
+                $_SESSION['role'] = $role; // Set the role here (admin or student)
                 header("Location: dashboard.php");
                 exit;
             } else {

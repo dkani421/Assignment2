@@ -11,10 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate input
     if (empty($username) || empty($email) || empty($password)) {
         // Handle empty fields
-        echo "Please fill in all fields.";
+        $_SESSION['registration_message'] = "Please fill in all fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         // Handle invalid email format
-        echo "Invalid email format.";
+        $_SESSION['registration_message'] = "Invalid email format.";
     } else {
         // Define your database connection details
         $host = "localhost";
@@ -38,13 +38,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the query
         if ($conn->query($sql) === TRUE) {
-            echo "Registration successful!";
+            // Set the registration success message in the session
+            $_SESSION['registration_message'] = "Registration successful!";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            // Set the registration error message in the session
+            $_SESSION['registration_message'] = "Error: " . $sql . "<br>" . $conn->error;
         }
 
         // Close the database connection
         $conn->close();
     }
+
+    // Redirect back to the login page
+    header("Location: login.php");
+    exit();
 }
 ?>

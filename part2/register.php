@@ -25,11 +25,17 @@
                 }
                 ?>
                 <li><a href="register.php">Register</a></li>
+                <li><a href="admin.php">Admin</a></li>
             </ul>
         </nav>
     </header>
     <main>
     <h2>Register</h2>
+    <!-- Add the registration message section -->
+    <?php if(isset($_SESSION['registration_message'])): ?>
+        <p><?php echo $_SESSION['registration_message']; ?></p>
+        <?php unset($_SESSION['registration_message']); ?>
+    <?php endif; ?>
     <form action="register_process.php" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br>
@@ -39,6 +45,13 @@
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br>
+
+         <!-- Add the radio button group for selecting the role -->
+         <label>Role:</label>
+        <input type="radio" id="admin" name="role" value="admin" required>
+        <label for="admin">Admin</label>
+        <input type="radio" id="student" name="role" value="student" required>
+        <label for="student">Student</label><br>
 
         <button type="submit">Register</button>
     </form>
