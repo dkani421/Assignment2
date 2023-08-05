@@ -1,0 +1,223 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #020111;
+  color: #fcfbfc;
+}
+
+header {
+  background-color: #835ccb;
+  color: #fcfbfc;
+  padding: 10px;
+  text-align: center;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  color: #fcfbfc;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+  text-align: center;
+  /* Center the content */
+  margin: 0 auto;
+  /* Center the element horizontally */
+  max-width: 800px;
+  /* Limit the width of the content */
+}
+
+footer {
+  background-color: #835ccb;
+  color: #fcfbfc;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Page-Specific Styles */
+
+/* Home Page */
+h1 {
+  font-size: 24px;
+  color: #fcfbfc;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Unit Pages */
+h1,
+h2 {
+  color: #fcfbfc;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+form {
+  margin-top: 20px;
+}
+
+input[type="submit"] {
+  background-color: #835ccb;
+  color: #fcfbfc;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #5e3b86;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table th,
+table td {
+  border: 1px solid #fcfbfc;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #835ccb;
+  color: #fcfbfc;
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fcfbfc;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  text-align: center;
+  color: #020111;
+}
+
+.dropdown-content a {
+  color: #020111;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Banner Image Styles */
+.banner {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Measurement Converter Tool */
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #835ccb;
+  color: #fcfbfc;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #5e3b86;
+}
+
+#conversionResult {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Additional Styles for Documentation */
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #fcfbfc;
+  margin: 20px 0;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+a {
+  color: #fcfbfc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
