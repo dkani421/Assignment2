@@ -1,0 +1,11 @@
+<Document>
+    <Contents>
+        <section>
+            <content_type>course</content_type>
+            <content_title>Test Upload</content_title>
+            <content_description>Test Description</content_description>
+            <content>Test Content</content>
+            <course_id>2</course_id>
+        </section>
+    </Contents>
+</Document>

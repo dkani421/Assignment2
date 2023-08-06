@@ -8,7 +8,6 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-// Define your database connection details
 $host = "localhost";
 $db_username = "root";
 $db_password = "admin";
@@ -65,10 +64,10 @@ if (!$result) {
     if ($result->num_rows > 0) {
         // Loop through the results and display the data
         while ($row = $result->fetch_assoc()) {
-            echo '<h2><a href="lesson.php?lesson_id=' . $row['content_id'] . '">' . $row['content_title'] . '</a></h2>';
+            echo '<h2><a href="lesson.php?course_id=' . $row['course_id'] . '">' . $row['content_title'] . '</a></h2>';
             echo '<p>' . $row['content_description'] . '</p>';
-            echo '<p>Course ID: ' . $row['content_id'] . '</p>'; // Display Course ID
-            echo '<p>Date Created: ' . $row['date_created'] . '</p>'; // Display Date Created
+            echo '<p>Course ID: ' . $row['course_id'] . '</p>'; 
+            echo '<p>Date Created: ' . $row['date_created'] . '</p>'; 
             echo '<p>Content: ' . $row['content'] . '</p>';
         }
     } else {

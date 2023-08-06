@@ -49,7 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $hashed_password)) {
                 // Set the session variables and redirect to the dashboard page 
                 $_SESSION['username'] = $username;
-                $_SESSION['role'] = $role; // Set the role here (admin or student)
+                $_SESSION['role'] = $role; 
+                $_SESSION['user_id'] = $user_id;
                 header("Location: dashboard.php");
                 exit;
             } else {

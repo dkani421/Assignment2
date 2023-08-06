@@ -1,14 +1,11 @@
 <?php
 session_start();
 
-// Check if the user is not logged in
 if (!isset($_SESSION['username'])) {
-    // Redirect to the login page or any other desired page
     header("Location: login.php");
     exit;
 }
 
-// Define your database connection details
 $host = "localhost";
 $db_username = "root";
 $db_password = "admin";
@@ -24,10 +21,10 @@ $sql = "SELECT * FROM eml WHERE content_type = 'quiz'";
 $result = $conn->query($sql);
 
 if (!$result) {
-    // Handle query execution error
     die("Error executing query: " . $conn->error);
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,20 +34,17 @@ if (!$result) {
 </head>
 <body>
     <header>
-        <h1>Quizzes</h1>
+        <h1>Quiz</h1>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li> 
+                <li><a href="index.php">Home</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="quiz.php">Quiz</a></li>
                 <li><a href="grades.php">Grades</a></li>
                 <?php
-                // Check if the user is logged in
                 if (isset($_SESSION['username'])) {
-                    // Show the "Logout" link
                     echo '<li><a href="logout.php">Logout</a></li>';
                 } else {
-                    // Show the "Login" link
                     echo '<li><a href="login.php">Login</a></li>';
                 }
                 ?>
@@ -62,16 +56,41 @@ if (!$result) {
     <main>
         <?php
         if ($result->num_rows > 0) {
-            // Loop through the quizzes and display each one
             while ($row = $result->fetch_assoc()) {
+                $quizId = $row['content_id'];
+                echo '<div class="quiz">';
                 echo '<h2>' . $row['content_title'] . '</h2>';
                 echo '<p>' . $row['content_description'] . '</p>';
-                echo '<form method="post" action="quiz_process.php">';
-                echo '<input type="submit" value="Submit">';
-                echo '</form>';
+
+                $quizQuestionsSql = "SELECT * FROM quiz_questions WHERE quiz_id = $quizId";
+                $quizQuestionsResult = $conn->query($quizQuestionsSql);
+
+                if ($quizQuestionsResult && $quizQuestionsResult->num_rows > 0) {
+                    echo '<form method="post" action="quiz_process.php">';
+                    while ($questionRow = $quizQuestionsResult->fetch_assoc()) {
+                        echo '<div class="question">';
+                        echo '<h3>' . $questionRow['question_text'] . '</h3>';
+                        echo '<p>a. ' . $questionRow['option1'] . '</p>';
+                        echo '<p>b. ' . $questionRow['option2'] . '</p>';
+                        echo '<p>c. ' . $questionRow['option3'] . '</p>';
+                        echo '<input type="radio" name="answers[' . $questionRow['question_id'] . ']" value="a">a';
+                        echo '<input type="radio" name="answers[' . $questionRow['question_id'] . ']" value="b">b';
+                        echo '<input type="radio" name="answers[' . $questionRow['question_id'] . ']" value="c">c';
+                        echo '</div>';
+                    }
+                    echo '<input type="hidden" name="quiz_score" value="0">';
+                    echo '<input type="hidden" name="quiz_id" value="' . $quizId . '">';
+                    echo '<input type="hidden" name="user_id" value="' . $_SESSION['user_id'] . '">';
+                    echo '<br>';
+                    echo '<input type="submit" value="Submit">';
+                    echo '</form>';
+                } else {
+                    echo '<p>No quiz questions found for this quiz.</p>';
+                }
+                echo '</div>';
             }
         } else {
-            echo 'No quizzes found.';
+            echo '<p>No quizzes found.</p>';
         }
         ?>
     </main>
