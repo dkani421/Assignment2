@@ -57,7 +57,6 @@ if (!$result_grades) {
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="quiz.php">Quiz</a></li>
                 <li><a href="grades.php">Grades</a></li>
                 <?php
                 // Check if the user is logged in

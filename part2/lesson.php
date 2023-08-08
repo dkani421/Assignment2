@@ -20,10 +20,24 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$course_id = 1; // The course_id of Course 1
+// Check if the course_id parameter is present in the URL
+if (isset($_GET['course_id']) && is_numeric($_GET['course_id'])) {
+    $course_id = $_GET['course_id'];
 
-// Fetch all lesson details of Course 1
-$sql_lessons = "SELECT * FROM eml WHERE content_type = 'lesson' AND course_id = $course_id";
+    // Fetch the course name based on the provided course_id
+    $sql_course = "SELECT content_title FROM eml WHERE content_type = 'course' AND content_id = $course_id";
+    $result_course = $conn->query($sql_course);
+
+    if (!$result_course) {
+        // Handle query execution error
+        die("Error executing course query: " . $conn->error);
+    }
+
+    $course_data = $result_course->fetch_assoc();
+    $course_name = $course_data['content_title'];
+
+    // Fetch all lesson details of the specified course
+$sql_lessons = "SELECT * FROM eml WHERE content_type = 'lesson' AND parent_id = $course_id";
 $result_lessons = $conn->query($sql_lessons);
 
 if (!$result_lessons) {
@@ -31,24 +45,31 @@ if (!$result_lessons) {
     die("Error executing lessons query: " . $conn->error);
 }
 
-// Fetch all the lessons belonging to Course 1
+// Fetch all the lessons belonging to the specified course
 $lessons = $result_lessons->fetch_all(MYSQLI_ASSOC);
+
+} else {
+    // Redirect or show an error message if the course_id parameter is missing or invalid
+    header("Location: index.php"); // Redirect to the homepage or any other suitable page
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Course 1 Lessons - Learning Management System</title>
+    <title><?php echo $course_name; ?> Lessons - Learning Management System</title>
     <link rel="stylesheet" href="../shared/styles.css">
 </head>
 <body>
-<header>
-        <h1>Course 1 Lessons</h1>
+<img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
+    <header>
+        <h1><?php echo $course_name; ?> Lessons</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="quiz.php">Quiz</a></li>
                 <li><a href="grades.php">Grades</a></li>
                 <?php
                 // Check if the user is logged in
@@ -66,16 +87,36 @@ $lessons = $result_lessons->fetch_all(MYSQLI_ASSOC);
         </nav>
     </header>
     <main>
-        <h2>Course 1 Lessons</h2>
-        <?php
-        foreach ($lessons as $lesson) {
-            echo '<h3>' . $lesson['content_title'] . '</h3>';
-            echo '<p>' . $lesson['content_description'] . '</p>';
-            echo '<p>Content: ' . $lesson['content'] . '</p>';
-            echo '<p>Date Created: ' . $lesson['date_created'] . '</p>';
-        }
-        ?>
-    </main>
+    <h2><?php echo $course_name; ?> Lessons</h2>
+    <?php
+    foreach ($lessons as $lesson) {
+        echo '<h3>' . $lesson['content_title'] . '</h3>';
+        echo '<p>' . $lesson['content_description'] . '</p>';
+        echo '<p>Content: ' . $lesson['content'] . '</p>';
+        echo '<p>Date Created: ' . $lesson['date_created'] . '</p>';
+    }
+    ?>
+    <h2><?php echo $course_name; ?> Quizzes</h2>
+    <?php
+    // Fetch all quiz details associated with the same course as lessons
+    $sql_quizzes = "SELECT * FROM eml WHERE content_type = 'quiz' AND parent_id = $course_id";
+    $result_quizzes = $conn->query($sql_quizzes);
+
+    if (!$result_quizzes) {
+        // Handle query execution error
+        die("Error executing quizzes query: " . $conn->error);
+    }
+
+    // Fetch all the quizzes associated with the specified course
+    $quizzes = $result_quizzes->fetch_all(MYSQLI_ASSOC);
+
+    foreach ($quizzes as $quiz) {
+        echo '<h3><a href="quiz.php?course_id=' . $quiz['parent_id'] . '">' . $quiz['content_title'] . '</a></h3>';
+        echo '<p>' . $quiz['content_description'] . '</p>';
+        echo '<p>Date Created: ' . $quiz['date_created'] . '</p>';
+    }
+    ?>
+</main>
     <footer>
         &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
     </footer>

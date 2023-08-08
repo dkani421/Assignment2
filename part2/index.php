@@ -13,7 +13,6 @@
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="quiz.php">Quiz</a></li>
                 <li><a href="grades.php">Grades</a></li>
                 <?php
                 // Check if the user is logged in
@@ -35,7 +34,7 @@
         <p>Your gateway to an enriched educational experience! Our LMS provides a user-friendly and intuitive interface designed to cater to all your learning needs. Whether you're a student, instructor, or an eager learner, our platform offers a comprehensive set of features to enhance your learning journey.</p>
 
         <h2><a href="dashboard.php">Dashboard</a></h2>
-        <p>Your Dashboard is where you'll find a detailed and customizable view of your courses, tasks, and upcoming events. It allows you to track your learning progress, manage deadlines, and stay organized. You can also access course materials, discussions, and other essential resources from this section.</p>
+        <p>Your Dashboard is where you'll find a detailed view of your courses, grades, and quizzes. It allows you to navigate the learning material, manage deadlines, and stay organized.</p>
 
         <h2><a href="quiz.php">Quiz</a></h2>
         <p>With our interactive Quiz feature, you can assess your knowledge and understanding of the course material. Engage in challenging quizzes that provide immediate feedback, enabling you to identify areas of improvement and solidify your grasp on the subject matter.</p>

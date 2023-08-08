@@ -27,7 +27,6 @@ $username = $_SESSION['username'];
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="quiz.php">Quiz</a></li>
                 <li><a href="grades.php">Grades</a></li>
                 <li><a href="logout.php">Logout</a></li>
                 <li><a href="register.php">Register</a></li>
@@ -36,18 +35,15 @@ $username = $_SESSION['username'];
         </nav>
     </header>
     <main>
-        <h2>Enrolled Courses</h2>
-        <ul>
-            <li><a href="course.php">Courses Dashboard</a></li>
-        </ul>
-        <h2>Quiz's</h2>
-        <ul>
-            <li><a href="course.php">Take A Quiz</a></li>
-        </ul>
-        <h2><?php echo $username; ?>'s Grades</h2>
-        <ul>
-            <li><a href="grades.php">User Grades</a></li>
-        </ul>
+    <h2><a href="course.php"><?php echo $username; ?>'s Enrolled Courses</a></h2>
+        <p>Explore the courses you are currently enrolled in. Access course materials.</p>
+
+        <h2><a href="quiz.php"><?php echo $username; ?>'s Quizzes</a></h2>
+        <p>Explore the quizzes we have to offer for each lesson that has be precreated.</p>
+
+        <h2><a href="grades.php"><?php echo $username; ?>'s Grades</a></h2>
+        <p>Explore your saved user grades to expand your understanding on the presented materials.</p>
+
     </main>
     <footer>
         &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.

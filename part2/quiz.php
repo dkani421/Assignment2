@@ -17,11 +17,18 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM eml WHERE content_type = 'quiz'";
-$result = $conn->query($sql);
+if (isset($_GET['course_id']) && is_numeric($_GET['course_id'])) {
+    $course_id = $_GET['course_id'];
+    
+    $sql = "SELECT * FROM eml WHERE content_type = 'quiz' AND parent_id = $course_id";
+    $result = $conn->query($sql);
 
-if (!$result) {
-    die("Error executing query: " . $conn->error);
+    if (!$result) {
+        die("Error executing query: " . $conn->error);
+    }
+} else {
+    header("Location: index.php"); // Redirect to the homepage or any other suitable page
+    exit;
 }
 ?>
 
@@ -40,7 +47,6 @@ if (!$result) {
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="quiz.php">Quiz</a></li>
                 <li><a href="grades.php">Grades</a></li>
                 <?php
                 if (isset($_SESSION['username'])) {
