@@ -7,26 +7,31 @@ $database = "Database2";
 
 // Check if the user is logged in and is an admin (you need to implement the authentication system)
 session_start();
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION["username"]) || $_SESSION["role"] !== "admin") {
     // Redirect to a login page or show an error message if the user is not an admin
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Function to process and save the uploaded EML content to the database
-function saveEmlToDatabase($emlContent) {
+function saveEmlToDatabase($emlContent)
+{
     global $host, $db_username, $db_password, $database;
 
     // Ensure $emlContent is not empty or null
     if (empty($emlContent)) {
-        die('EML content is empty.');
+        die("EML content is empty.");
     }
 
     try {
-        $db = new PDO("mysql:host=$host;dbname=$database", $db_username, $db_password);
+        $db = new PDO(
+            "mysql:host=$host;dbname=$database",
+            $db_username,
+            $db_password
+        );
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
-        die('Database connection failed: ' . $e->getMessage());
+        die("Database connection failed: " . $e->getMessage());
     }
 
     // Parse the EML content as defiend in the assignment
@@ -34,46 +39,63 @@ function saveEmlToDatabase($emlContent) {
 
     // Check if XML parsing was successful
     if ($xml === false) {
-        die('Failed to parse the XML content.');
+        die("Failed to parse the XML content.");
     }
 
     // Check if the necessary eml table elements exist before reading their values
-    if (!isset($xml->Contents->section->content_type) || !isset($xml->Contents->section->content_title) || !isset($xml->Contents->section->content_description) || !isset($xml->Contents->section->content)) {
-        die('XML content does not have the required elements.');
+    if (
+        !isset($xml->Contents->section->content_type) ||
+        !isset($xml->Contents->section->content_title) ||
+        !isset($xml->Contents->section->content_description) ||
+        !isset($xml->Contents->section->content)
+    ) {
+        die("XML content does not have the required elements.");
     }
 
     // Read the values from the XML input
     $content_type = (string) $xml->Contents->section->content_type;
     $content_title = (string) $xml->Contents->section->content_title;
-    $content_description = (string) $xml->Contents->section->content_description;
+    $content_description =
+        (string) $xml->Contents->section->content_description;
     $content = (string) $xml->Contents->section->content;
-    $parent_id = isset($xml->Contents->section->parent_id) ? (int) $xml->Contents->section->parent_id : null;
-    $course_id = isset($xml->Contents->section->course_id) ? (int) $xml->Contents->section->course_id : null;
+    $parent_id = isset($xml->Contents->section->parent_id)
+        ? (int) $xml->Contents->section->parent_id
+        : null;
+    $course_id = isset($xml->Contents->section->course_id)
+        ? (int) $xml->Contents->section->course_id
+        : null;
 
-    // Insert the EML content into the 'eml' table 
+    // Insert the EML content into the 'eml' table
     $query = "INSERT INTO eml (content_type, parent_id, content_title, content_description, content, course_id, date_created, date_modified) 
             VALUES (:content_type, :parent_id, :content_title, :content_description, :content, :course_id, NOW(), NOW())";
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':content_type', $content_type, PDO::PARAM_STR);
-    $stmt->bindParam(':parent_id', $parent_id, PDO::PARAM_INT);
-    $stmt->bindParam(':content_title', $content_title, PDO::PARAM_STR);
-    $stmt->bindParam(':content_description', $content_description, PDO::PARAM_STR);
-    $stmt->bindParam(':content', $content, PDO::PARAM_STR);
-    $stmt->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+    $stmt->bindParam(":content_type", $content_type, PDO::PARAM_STR);
+    $stmt->bindParam(":parent_id", $parent_id, PDO::PARAM_INT);
+    $stmt->bindParam(":content_title", $content_title, PDO::PARAM_STR);
+    $stmt->bindParam(
+        ":content_description",
+        $content_description,
+        PDO::PARAM_STR
+    );
+    $stmt->bindParam(":content", $content, PDO::PARAM_STR);
+    $stmt->bindParam(":course_id", $course_id, PDO::PARAM_INT);
 
     // Execute the query
     try {
         $stmt->execute();
     } catch (PDOException $e) {
-        die('Error executing the database query: ' . $e->getMessage());
+        die("Error executing the database query: " . $e->getMessage());
     }
 }
 
 // Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_FILES['eml_file']) && $_FILES['eml_file']['error'] === UPLOAD_ERR_OK) {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (
+        isset($_FILES["eml_file"]) &&
+        $_FILES["eml_file"]["error"] === UPLOAD_ERR_OK
+    ) {
         // Get the temporary uploaded file path
-        $tmpFilePath = $_FILES['eml_file']['tmp_name'];
+        $tmpFilePath = $_FILES["eml_file"]["tmp_name"];
 
         // Read the EML content from the temporary file
         $emlContent = file_get_contents($tmpFilePath);
@@ -83,12 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect or show a success message
         header("Location: admin.php?upload_success=true");
-        exit;
+        exit();
     } else {
         // Handle file upload error
         // Redirect or show an error message
         header("Location: admin.php?upload_error=true");
-        exit;
+        exit();
     }
 }
 ?>
@@ -108,37 +130,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Admin - Upload EML File</h1>
+        <h1 class="white-title">Admin - Upload EML File</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <?php
-                // Check if the user is logged in
-                if (isset($_SESSION['username'])) {
+                <li><a href="admin.php">Admin</a></li>        
+                <li><a href="register.php">Register</a></li>
+                <?php // Check if the user is logged in
+                if (isset($_SESSION["username"])) {
                     // Show the "Logout" link
                     echo '<li><a href="logout.php">Logout</a></li>';
                 } else {
                     // Show the "Login" link
                     echo '<li><a href="login.php">Login</a></li>';
-                }
-                ?>
-                <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                } ?>
             </ul>
         </nav>
     </header>
     <main>
         <?php
         // Show a success message if the upload was successful
-        if (isset($_GET['upload_success']) && $_GET['upload_success'] === 'true') {
-            echo '<p>File uploaded successfully!</p>';
+        if (
+            isset($_GET["upload_success"]) &&
+            $_GET["upload_success"] === "true"
+        ) {
+            echo "<p>File uploaded successfully!</p>";
         }
 
         // Show an error message if there was an upload error
-        if (isset($_GET['upload_error']) && $_GET['upload_error'] === 'true') {
-            echo '<p>Error uploading the file. Please try again.</p>';
+        if (isset($_GET["upload_error"]) && $_GET["upload_error"] === "true") {
+            echo "<p>Error uploading the file. Please try again.</p>";
         }
         ?>
 
@@ -171,7 +194,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>

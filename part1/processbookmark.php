@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Define your database connection details
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         // Display an error message
         echo "Connection failed: " . $conn->connect_error;
-        exit;
+        exit();
     }
 
     // Prepare the SQL statement to insert the bookmark
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare($sql);
 
     // Bind the parameters
-    $stmt->bind_param("sss", $name, $url, $_SESSION['username']);
+    $stmt->bind_param("sss", $name, $url, $_SESSION["username"]);
 
     // Execute the statement
     $stmt->execute();
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->affected_rows === 1) {
         // Bookmark added successfully, redirect to bookmarks page or any other desired page
         header("Location: bookmarks.php");
-        exit;
+        exit();
     } else {
         // Display an error message if the bookmark insertion failed
         echo "Failed to add bookmark.";

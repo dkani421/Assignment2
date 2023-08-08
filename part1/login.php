@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is already logged in
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION["username"])) {
     // Redirect to the home page or any other desired page
     header("Location: index.php");
-    exit;
+    exit();
 }
 
 // Define your database connection details
@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     // Check if the username and password match the admin credentials
-    if ($username === 'admin' && $password === 'admin') {
+    if ($username === "admin" && $password === "admin") {
         // Set the session variable and redirect to the home page or any other desired page
-        $_SESSION['username'] = $username;
+        $_SESSION["username"] = $username;
         header("Location: index.php");
-        exit;
+        exit();
     } else {
         // Set the error message
         $error = "Invalid username or password.";
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
     <header>
-        <h1>Bookmarking Service</h1>
+        <h1 class="white-title">Bookmarking Service</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>
@@ -70,12 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="submit" value="Login">
         </form>
         
-        <?php
-        // Display the error message if it exists
+        <?php // Display the error message if it exists
         if (isset($error)) {
             echo "<div class='error'>$error</div>";
-        }
-        ?>
+        } ?>
     </main>
     <footer>
         &copy; 2023 Bookmarking Service. All rights reserved.

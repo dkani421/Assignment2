@@ -8,35 +8,31 @@
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Login</h1>
+        <h1 class="white-title">Login</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <?php
-                // Check if the user is logged in
-                if (isset($_SESSION['username'])) {
+                <li><a href="admin.php">Admin</a></li>        
+                <li><a href="register.php">Register</a></li>
+                <?php // Check if the user is logged in
+                if (isset($_SESSION["username"])) {
                     // Show the "Logout" link
                     echo '<li><a href="logout.php">Logout</a></li>';
                 } else {
                     // Show the "Login" link
                     echo '<li><a href="login.php">Login</a></li>';
-                }
-                ?>
-                <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                } ?>
             </ul>
         </nav>
     </header>
     <main>
-        <?php
-        // Display the error message, if any
-        if (isset($_SESSION['error'])) {
-            echo '<p style="color: white;">' . $_SESSION['error'] . '</p>';
-            unset($_SESSION['error']); // Clear the error message after displaying it
-        }
-        ?>
+        <?php // Display the error message, if any
+        if (isset($_SESSION["error"])) {
+            echo '<p style="color: white;">' . $_SESSION["error"] . "</p>";
+            unset($_SESSION["error"]); // Clear the error message after displaying it
+        } ?>
         <form action="login_process.php" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
@@ -48,7 +44,9 @@
         </form>
     </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>

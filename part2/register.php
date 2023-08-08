@@ -8,33 +8,31 @@
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Register</h1>
+        <h1 class="white-title">Register</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <?php
-                // Check if the user is logged in
-                if (isset($_SESSION['username'])) {
+                <li><a href="admin.php">Admin</a></li>        
+                <li><a href="register.php">Register</a></li>
+                <?php // Check if the user is logged in
+                if (isset($_SESSION["username"])) {
                     // Show the "Logout" link
                     echo '<li><a href="logout.php">Logout</a></li>';
                 } else {
                     // Show the "Login" link
                     echo '<li><a href="login.php">Login</a></li>';
-                }
-                ?>
-                <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                } ?>
             </ul>
         </nav>
     </header>
     <main>
     <h2>Register</h2>
     <!-- Add the registration message section -->
-    <?php if(isset($_SESSION['registration_message'])): ?>
-        <p><?php echo $_SESSION['registration_message']; ?></p>
-        <?php unset($_SESSION['registration_message']); ?>
+    <?php if (isset($_SESSION["registration_message"])): ?>
+        <p><?php echo $_SESSION["registration_message"]; ?></p>
+        <?php unset($_SESSION["registration_message"]); ?>
     <?php endif; ?>
     <form action="register_process.php" method="POST">
         <label for="username">Username:</label>
@@ -57,7 +55,9 @@
     </form>
     </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>

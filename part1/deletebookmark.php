@@ -2,18 +2,18 @@
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Check if the bookmark ID is provided
-if (isset($_GET['id'])) {
+if (isset($_GET["id"])) {
     // Get the bookmark ID
-    $bookmarkId = $_GET['id'];
+    $bookmarkId = $_GET["id"];
 
-    // Define your database connection details
+    // Define database connection details
     $host = "localhost";
     $db_username = "root";
     $db_password = "admin";
@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
     if ($conn->connect_error) {
         // Display an error message
         echo "Connection failed: " . $conn->connect_error;
-        exit;
+        exit();
     }
 
     // Prepare the SQL statement to delete the bookmark
@@ -45,7 +45,7 @@ if (isset($_GET['id'])) {
     if ($stmt->affected_rows === 1) {
         // Bookmark deleted successfully, redirect to bookmarks page or any other desired page
         header("Location: bookmarks.php");
-        exit;
+        exit();
     } else {
         // Display an error message if the bookmark deletion failed
         echo "Failed to delete bookmark.";
@@ -56,6 +56,6 @@ if (isset($_GET['id'])) {
 } else {
     // Bookmark ID is not provided, redirect to bookmarks page or any other desired page
     header("Location: bookmarks.php");
-    exit;
+    exit();
 }
 ?>

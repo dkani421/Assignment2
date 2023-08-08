@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is not logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 $host = "localhost";
@@ -38,24 +38,22 @@ if (!$result) {
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Course Dashboard</h1>
+        <h1 class="white-title">Course Dashboard</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <?php
-                // Check if the user is logged in
-                if (isset($_SESSION['username'])) {
+                <li><a href="admin.php">Admin</a></li>        
+                <li><a href="register.php">Register</a></li>
+                <?php // Check if the user is logged in
+                if (isset($_SESSION["username"])) {
                     // Show the "Logout" link
                     echo '<li><a href="logout.php">Logout</a></li>';
                 } else {
                     // Show the "Login" link
                     echo '<li><a href="login.php">Login</a></li>';
-                }
-                ?>
-                <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                } ?>
             </ul>
         </nav>
     </header>
@@ -64,21 +62,27 @@ if (!$result) {
     if ($result->num_rows > 0) {
         // Loop through the results and display the data
         while ($row = $result->fetch_assoc()) {
-            echo '<h2><a href="lesson.php?course_id=' . $row['course_id'] . '">' . $row['content_title'] . '</a></h2>';
-            echo '<p>' . $row['content_description'] . '</p>';
-            echo '<p>Course ID: ' . $row['course_id'] . '</p>'; 
-            echo '<p>Date Created: ' . $row['date_created'] . '</p>'; 
-            echo '<p>Content: ' . $row['content'] . '</p>';
+            echo '<h2><a href="lesson.php?course_id=' .
+                $row["course_id"] .
+                '">' .
+                $row["content_title"] .
+                "</a></h2>";
+            echo "<p>" . $row["content_description"] . "</p>";
+            echo "<p>Course ID: " . $row["course_id"] . "</p>";
+            echo "<p>Date Created: " . $row["date_created"] . "</p>";
+            echo "<p>Content: " . $row["content"] . "</p>";
         }
     } else {
-        echo 'No course data found.';
+        echo "No course data found.";
     }
 
     $conn->close();
     ?>
 </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>

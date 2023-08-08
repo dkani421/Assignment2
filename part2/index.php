@@ -8,24 +8,22 @@
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Learning Management System</h1>
+        <h1 class="white-title">Home</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <?php
-                // Check if the user is logged in
-                if (isset($_SESSION['username'])) {
+                <li><a href="admin.php">Admin</a></li>        
+                <li><a href="register.php">Register</a></li>
+                <?php // Check if the user is logged in
+                if (isset($_SESSION["username"])) {
                     // Show the "Logout" link
                     echo '<li><a href="logout.php">Logout</a></li>';
                 } else {
                     // Show the "Login" link
                     echo '<li><a href="login.php">Login</a></li>';
-                }
-                ?>
-                <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                } ?>
             </ul>
         </nav>
     </header>
@@ -36,7 +34,7 @@
         <h2><a href="dashboard.php">Dashboard</a></h2>
         <p>Your Dashboard is where you'll find a detailed view of your courses, grades, and quizzes. It allows you to navigate the learning material, manage deadlines, and stay organized.</p>
 
-        <h2><a href="quiz.php">Quiz</a></h2>
+        <h2>Quiz</h2>
         <p>With our interactive Quiz feature, you can assess your knowledge and understanding of the course material. Engage in challenging quizzes that provide immediate feedback, enabling you to identify areas of improvement and solidify your grasp on the subject matter.</p>
 
         <h2><a href="grades.php">Grades</a></h2>
@@ -49,7 +47,9 @@
         <p>To unlock the vast array of educational resources and courses, you need to log in or register with our platform. Returning users can access their accounts with ease, while new users can quickly create an account to embark on their learning journey.</p>
     </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>

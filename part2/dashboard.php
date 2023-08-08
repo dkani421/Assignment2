@@ -2,14 +2,14 @@
 session_start();
 
 // Check if the user is not logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Get the username from the session
-$username = $_SESSION['username'];
+$username = $_SESSION["username"];
 ?>
 
 <!DOCTYPE html>
@@ -22,31 +22,31 @@ $username = $_SESSION['username'];
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Welcome to <?php echo $username; ?>'s Dashboard</h1>
+        <h1 class="white-title"><?php echo $username; ?>'s Dashboard</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <li><a href="logout.php">Logout</a></li>
+                <li><a href="admin.php">Admin</a></li>              
                 <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                <li><a href="logout.php">Logout</a></li>
+                
             </ul>
         </nav>
     </header>
     <main>
-    <h2><a href="course.php"><?php echo $username; ?>'s Enrolled Courses</a></h2>
+        <h2><a href="course.php"><?php echo $username; ?>'s Enrolled Courses</a></h2>
         <p>Explore the courses you are currently enrolled in. Access course materials.</p>
-
-        <h2><a href="quiz.php"><?php echo $username; ?>'s Quizzes</a></h2>
-        <p>Explore the quizzes we have to offer for each lesson that has be precreated.</p>
 
         <h2><a href="grades.php"><?php echo $username; ?>'s Grades</a></h2>
         <p>Explore your saved user grades to expand your understanding on the presented materials.</p>
 
     </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>

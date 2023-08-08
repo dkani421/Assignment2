@@ -1,17 +1,17 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     header("Location: login.php");
-    exit;
+    exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get the user's ID from the session
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION["user_id"];
 
     // Get the quiz score from the form submission
-    $quiz_score = $_POST['quiz_score'];
+    $quiz_score = $_POST["quiz_score"];
 
     // Define your database connection details
     $host = "localhost";
@@ -27,14 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Prepare and execute the update query
     $course_name = "Introduction to Programming"; // Assuming a fixed course name
-    $update_query = "INSERT INTO grades (user_id, course_name, grade) VALUES (?, ?, ?)";
+    $update_query =
+        "INSERT INTO grades (user_id, course_name, grade) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($update_query);
     $stmt->bind_param("iss", $user_id, $course_name, $quiz_score);
 
     if ($stmt->execute()) {
         // Successful update, redirect to quiz list or other page
         header("Location: quizzes.php");
-        exit;
+        exit();
     } else {
         // Handle update error
         echo "Error updating grade: " . $stmt->error;
@@ -45,6 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     // Redirect to quiz page if accessed directly
     header("Location: quiz.php");
-    exit;
+    exit();
 }
 ?>

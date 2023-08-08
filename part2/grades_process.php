@@ -28,7 +28,11 @@ if ($result === false) {
 // Fetch and process the data (example)
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        echo "Course Name: " . $row['course_name'] . ", Grade: " . $row['grade'] . "<br>";
+        echo "Course Name: " .
+            $row["course_name"] .
+            ", Grade: " .
+            $row["grade"] .
+            "<br>";
     }
 } else {
     echo "No grades found for the user.";

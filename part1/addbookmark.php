@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is not logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 ?>
 
@@ -20,7 +20,7 @@ if (!isset($_SESSION['username'])) {
 <body>
 <img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
     <header>
-        <h1>Bookmarking Service</h1>
+        <h1 class="white-title">Bookmarking Service</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>

@@ -2,21 +2,21 @@
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Check if the bookmark ID is provided as a query parameter
-if (!isset($_GET['id'])) {
+if (!isset($_GET["id"])) {
     // Bookmark ID is not provided, redirect to bookmarks page or any other desired page
     header("Location: bookmarks.php");
-    exit;
+    exit();
 }
 
 // Get the bookmark ID from the query parameter
-$bookmarkId = $_GET['id'];
+$bookmarkId = $_GET["id"];
 
 // Define your database connection details
 $host = "localhost";
@@ -31,7 +31,7 @@ $conn = new mysqli($host, $db_username, $db_password, $database);
 if ($conn->connect_error) {
     // Display an error message
     echo "Connection failed: " . $conn->connect_error;
-    exit;
+    exit();
 }
 
 // Prepare the SQL statement to retrieve the bookmark
@@ -71,7 +71,7 @@ if ($result->num_rows === 1) {
         if ($conn->connect_error) {
             // Display an error message
             echo "Connection failed: " . $conn->connect_error;
-            exit;
+            exit();
         }
 
         // Prepare the SQL statement to update the bookmark
@@ -94,7 +94,7 @@ if ($result->num_rows === 1) {
 
             // Redirect to bookmarks page or any other desired page
             header("Location: bookmarks.php");
-            exit;
+            exit();
         } else {
             // Display an error message if the bookmark update failed
             echo "Failed to update bookmark.";
@@ -107,12 +107,12 @@ if ($result->num_rows === 1) {
 
     // Redirect to the edit bookmark page if the form was not submitted
     header("Location: editbookmark.php?id=" . $bookmarkId);
-    exit;
+    exit();
 } else {
     // Bookmark not found, redirect to bookmarks page or any other desired page
     $stmt->close();
     $conn->close();
     header("Location: bookmarks.php");
-    exit;
+    exit();
 }
 ?>

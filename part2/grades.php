@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is not logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Define your database connection details
@@ -21,7 +21,7 @@ if ($conn->connect_error) {
 }
 
 // Retrieve the user_id of the logged-in user from the users table
-$username = $_SESSION['username'];
+$username = $_SESSION["username"];
 $sql_user = "SELECT user_id FROM users WHERE username = '$username'";
 $result_user = $conn->query($sql_user);
 
@@ -31,7 +31,7 @@ if (!$result_user) {
 }
 
 $user = $result_user->fetch_assoc();
-$user_id = $user['user_id'];
+$user_id = $user["user_id"];
 
 // Retrieve grades for the logged-in user from the grades table
 $sql_grades = "SELECT course_name, grade FROM grades WHERE user_id = $user_id";
@@ -46,58 +46,48 @@ if (!$result_grades) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Grades - Learning Management System</title>
+    <title><?php echo $username; ?>'s Grades - Learning Management System</title>
     <link rel="stylesheet" href="../shared/styles.css">
 </head>
 <body>
 <img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
-        <h1>Grades</h1>
+        <h1 class="white-title"><?php echo $username; ?>'s Grades</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li> 
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="grades.php">Grades</a></li>
-                <?php
-                // Check if the user is logged in
-                if (isset($_SESSION['username'])) {
-                    // Show the "Logout" link
-                    echo '<li><a href="logout.php">Logout</a></li>';
-                } else {
-                    // Show the "Login" link
-                    echo '<li><a href="login.php">Login</a></li>';
-                }
-                ?>
+                <li><a href="admin.php">Admin</a></li>              
                 <li><a href="register.php">Register</a></li>
-                <li><a href="admin.php">Admin</a></li>
+                <li><a href="logout.php">Logout</a></li>
+                
             </ul>
         </nav>
     </header>
     <main>
-        <?php
-        if ($result_grades->num_rows > 0) {
-            $username = $_SESSION['username'];
-            echo "<h2>$username's Grades</h2>";
+        <?php if ($result_grades->num_rows > 0) {
+            $username = $_SESSION["username"];
             echo "<table>";
             echo "<tr><th>Course</th><th>Grade</th></tr>";
             while ($row = $result_grades->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row['course_name'] . "</td>";
-                echo "<td>" . $row['grade'] . "</td>";
+                echo "<td>" . $row["course_name"] . "</td>";
+                echo "<td>" . $row["grade"] . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
         } else {
             echo "<p>No grades available.</p>";
-        }
-        ?>
+        } ?>
     </main>
     <footer>
-        &copy; <?php echo date("Y"); ?> Learning Management System. All rights reserved.
+        &copy; <?php echo date(
+            "Y"
+        ); ?> Learning Management System. All rights reserved.
     </footer>
 </body>
 </html>
-<?php
-// Close the database connection
+<?php // Close the database connection
 $conn->close();
 ?>

@@ -8,7 +8,7 @@
 <body>
 <img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
     <header>
-        <h1>Bookmarking Service</h1>
+        <h1 class="white-title">Bookmarking Service</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>
@@ -25,10 +25,10 @@
             session_start();
 
             // Check if the user is logged in
-            if (!isset($_SESSION['username'])) {
+            if (!isset($_SESSION["username"])) {
                 // Redirect to the login page or any other desired page
                 header("Location: login.php");
-                exit;
+                exit();
             }
 
             // Define your database connection details
@@ -44,11 +44,11 @@
             if ($conn->connect_error) {
                 // Display an error message
                 echo "Connection failed: " . $conn->connect_error;
-                exit;
+                exit();
             }
 
             // Get the username from the session
-            $username = $_SESSION['username'];
+            $username = $_SESSION["username"];
 
             // Prepare the SQL statement to retrieve the user's bookmarks
             $sql = "SELECT * FROM bookmarks WHERE username = ?";
@@ -68,11 +68,19 @@
             // Loop through the bookmarks and display them
             while ($row = $result->fetch_assoc()) {
                 echo "<li>";
-                echo "<a href='" . $row['url'] . "' target='_blank'>" . $row['name'] . "</a>";
-                echo "<form style='display: inline;' action='editbookmark.php?id=" . $row['id'] . "' method='POST'>";
+                echo "<a href='" .
+                    $row["url"] .
+                    "' target='_blank'>" .
+                    $row["name"] .
+                    "</a>";
+                echo "<form style='display: inline;' action='editbookmark.php?id=" .
+                    $row["id"] .
+                    "' method='POST'>";
                 echo "<button type='submit' name='edit'>Edit</button>";
                 echo "</form>";
-                echo "<form style='display: inline;' action='deletebookmark.php?id=" . $row['id'] . "' method='POST'>";
+                echo "<form style='display: inline;' action='deletebookmark.php?id=" .
+                    $row["id"] .
+                    "' method='POST'>";
                 echo "<button type='submit' name='delete'>Delete</button>";
                 echo "</form>";
                 echo "</li>";

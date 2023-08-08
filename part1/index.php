@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is logged in
-$isLoggedIn = isset($_SESSION['username']);
+$isLoggedIn = isset($_SESSION["username"]);
 if ($isLoggedIn) {
     // Get the username from the session
-    $username = $_SESSION['username'];
+    $username = $_SESSION["username"];
 }
 
 // Define your database connection details
@@ -21,7 +21,7 @@ $conn = new mysqli($host, $db_username, $db_password, $database);
 if ($conn->connect_error) {
     // Display an error message
     echo "Connection failed: " . $conn->connect_error;
-    exit;
+    exit();
 }
 
 // Prepare the SQL statement to retrieve the top 10 bookmarks
@@ -44,34 +44,36 @@ $conn->close();
 <body>
 <img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
     <header>
-        <h1>Bookmarking Service</h1>
+        <h1 class="white-title">Bookmarking Service</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="bookmarks.php">My Bookmarks</a></li>
                 <li><a href="addbookmark.php">Add Bookmark</a></li>
-                <?php if ($isLoggedIn) : ?>
+                <?php if ($isLoggedIn): ?>
                     <li><a href="logout.php">Logout</a></li>
-                <?php else : ?>
+                <?php else: ?>
                     <li><a href="login.php">Login</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
     </header>
     <main>
-        <?php if ($isLoggedIn) : ?>
+        <?php if ($isLoggedIn): ?>
             <h2>Welcome, <?php echo $username; ?>!</h2>
         <?php else: ?>
             <h2>Welcome!</h2>
         <?php endif; ?>
         <p>Here are the ten most popular websites bookmarked by users:</p>
         <ul>
-            <?php
-            // Loop through the results and display the bookmarks
+            <?php // Loop through the results and display the bookmarks
             while ($row = $result->fetch_assoc()) {
-                echo "<li><a href='" . $row['url'] . "' target='_blank'>" . $row['name'] . "</a></li>";
-            }
-            ?>
+                echo "<li><a href='" .
+                    $row["url"] .
+                    "' target='_blank'>" .
+                    $row["name"] .
+                    "</a></li>";
+            } ?>
         </ul>
     </main>
     <footer>

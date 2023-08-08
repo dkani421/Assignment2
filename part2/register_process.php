@@ -11,10 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate input
     if (empty($username) || empty($email) || empty($password)) {
         // Handle empty fields
-        $_SESSION['registration_message'] = "Please fill in all fields.";
+        $_SESSION["registration_message"] = "Please fill in all fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         // Handle invalid email format
-        $_SESSION['registration_message'] = "Invalid email format.";
+        $_SESSION["registration_message"] = "Invalid email format.";
     } else {
         // Define your database connection details
         $host = "localhost";
@@ -37,12 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashed_password')";
 
         // Execute the query
-        if ($conn->query($sql) === TRUE) {
+        if ($conn->query($sql) === true) {
             // Set the registration success message in the session
-            $_SESSION['registration_message'] = "Registration successful!";
+            $_SESSION["registration_message"] = "Registration successful!";
         } else {
             // Set the registration error message in the session
-            $_SESSION['registration_message'] = "Error: " . $sql . "<br>" . $conn->error;
+            $_SESSION["registration_message"] =
+                "Error: " . $sql . "<br>" . $conn->error;
         }
 
         // Close the database connection

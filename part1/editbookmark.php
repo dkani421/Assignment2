@@ -2,21 +2,21 @@
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION["username"])) {
     // Redirect to the login page or any other desired page
     header("Location: login.php");
-    exit;
+    exit();
 }
 
 // Check if the bookmark ID is provided as a query parameter
-if (!isset($_GET['id'])) {
+if (!isset($_GET["id"])) {
     // Bookmark ID is not provided, redirect to bookmarks page or any other desired page
     header("Location: bookmarks.php");
-    exit;
+    exit();
 }
 
 // Get the bookmark ID from the query parameter
-$bookmarkId = $_GET['id'];
+$bookmarkId = $_GET["id"];
 
 // Define your database connection details
 $host = "localhost";
@@ -31,7 +31,7 @@ $conn = new mysqli($host, $db_username, $db_password, $database);
 if ($conn->connect_error) {
     // Display an error message
     echo "Connection failed: " . $conn->connect_error;
-    exit;
+    exit();
 }
 
 // Prepare the SQL statement to retrieve the bookmark
@@ -51,6 +51,7 @@ $result = $stmt->get_result();
 
 // Check if the bookmark exists
 if ($result->num_rows === 1) {
+
     // Fetch the bookmark data
     $bookmark = $result->fetch_assoc();
 
@@ -71,7 +72,7 @@ if ($result->num_rows === 1) {
     <body>
     <img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
         <header>
-            <h1>Bookmarking Service</h1>
+            <h1 class="white-title">Bookmarking Service</h1>
             <nav>
                 <ul>
                     <li><a href="index.php">Home</a></li>
@@ -85,9 +86,13 @@ if ($result->num_rows === 1) {
             <h2>Edit Bookmark</h2>
             <form action="updatebookmark.php?id=<?php echo $bookmarkId; ?>" method="POST" onsubmit="return validateForm();">
                 <label for="name">Website Name:</label>
-                <input type="text" id="name" name="name" value="<?php echo $bookmark['name']; ?>" required>
+                <input type="text" id="name" name="name" value="<?php echo $bookmark[
+                    "name"
+                ]; ?>" required>
                 <label for="url">Website URL:</label>
-                <input type="text" id="url" name="url" value="<?php echo $bookmark['url']; ?>" required>
+                <input type="text" id="url" name="url" value="<?php echo $bookmark[
+                    "url"
+                ]; ?>" required>
                 <input type="submit" value="Update Bookmark">
             </form>
         </main>
@@ -102,6 +107,6 @@ if ($result->num_rows === 1) {
     $stmt->close();
     $conn->close();
     header("Location: bookmarks.php");
-    exit;
+    exit();
 }
 ?>

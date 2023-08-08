@@ -2,10 +2,10 @@
 session_start();
 
 // Check if the user is already logged in
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION["username"])) {
     // Redirect to the home page or any other desired page
     header("Location: dashboard.php");
-    exit;
+    exit();
 }
 
 // Define your database connection details
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate input
     if (empty($username) || empty($password)) {
         // Handle empty fields
-        $_SESSION['error'] = "Both username and password are required.";
+        $_SESSION["error"] = "Both username and password are required.";
     } else {
         // Create a database connection
         $conn = new mysqli($host, $db_username, $db_password, $database);
@@ -47,19 +47,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Verify the submitted password against the hashed password
             if (password_verify($password, $hashed_password)) {
-                // Set the session variables and redirect to the dashboard page 
-                $_SESSION['username'] = $username;
-                $_SESSION['role'] = $role; 
-                $_SESSION['user_id'] = $user_id;
+                // Set the session variables and redirect to the dashboard page
+                $_SESSION["username"] = $username;
+                $_SESSION["role"] = $role;
+                $_SESSION["user_id"] = $user_id;
                 header("Location: dashboard.php");
-                exit;
+                exit();
             } else {
                 // Set the error message for incorrect username or password
-                $_SESSION['error'] = "Invalid username or password.";
+                $_SESSION["error"] = "Invalid username or password.";
             }
         } else {
             // Set the error message for incorrect username or password
-            $_SESSION['error'] = "Invalid username or password.";
+            $_SESSION["error"] = "Invalid username or password.";
         }
 
         // Close the database connection
@@ -69,5 +69,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Redirect back to the login page, regardless of success or failure
 header("Location: login.php");
-exit;
+exit();
 ?>
