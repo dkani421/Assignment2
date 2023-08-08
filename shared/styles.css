@@ -133,7 +133,7 @@ table th {
 
 /* Banner Image Styles */
 .banner {
-  width: 100%;
+  width: auto;
   height: auto;
   display: block;
   margin: 0 auto;

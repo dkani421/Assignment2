@@ -50,6 +50,7 @@ if (!$result_grades) {
     <link rel="stylesheet" href="../shared/styles.css">
 </head>
 <body>
+<img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
         <h1>Grades</h1>
         <nav>

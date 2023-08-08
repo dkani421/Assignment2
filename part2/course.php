@@ -36,6 +36,7 @@ if (!$result) {
     <link rel="stylesheet" href="../shared/styles.css">
 </head>
 <body>
+<img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
         <h1>Course Dashboard</h1>
         <nav>

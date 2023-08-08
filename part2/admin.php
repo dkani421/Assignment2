@@ -106,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 <body>
+<img class="banner" src="../Shared/ELMS.png" alt="Banner Image">
     <header>
         <h1>Admin - Upload EML File</h1>
         <nav>

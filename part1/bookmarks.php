@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../shared/styles.css">
 </head>
 <body>
+<img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
     <header>
         <h1>Bookmarking Service</h1>
         <nav>

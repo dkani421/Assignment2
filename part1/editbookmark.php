@@ -69,6 +69,7 @@ if ($result->num_rows === 1) {
         <script src="validate.js"></script>
     </head>
     <body>
+    <img class="banner" src="../Shared/Bookmarking.png" alt="Banner Image">
         <header>
             <h1>Bookmarking Service</h1>
             <nav>
