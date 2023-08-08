@@ -1,3 +1,7 @@
+<?php
+session_start(); // Start the session
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,11 +33,6 @@
     </header>
     <main>
     <h2>Register</h2>
-    <!-- Add the registration message section -->
-    <?php if (isset($_SESSION["registration_message"])): ?>
-        <p><?php echo $_SESSION["registration_message"]; ?></p>
-        <?php unset($_SESSION["registration_message"]); ?>
-    <?php endif; ?>
     <form action="register_process.php" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br>
@@ -52,6 +51,10 @@
         <label for="student">Student</label><br>
 
         <button type="submit">Register</button>
+        <?php if (isset($_SESSION["registration_message"])): ?>
+        <p><?php echo $_SESSION["registration_message"]; ?></p>
+        <?php unset($_SESSION["registration_message"]); ?>
+        <?php endif; ?>
     </form>
     </main>
     <footer>

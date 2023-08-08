@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Prepare a SQL query to fetch the user's password and role from the database
-        $sql = "SELECT password, role FROM users WHERE username = '$username'";
+        $sql = "SELECT user_id, password, role FROM users WHERE username = '$username'";
 
         // Execute the query
         $result = $conn->query($sql);
@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $row = $result->fetch_assoc();
             $hashed_password = $row["password"];
             $role = $row["role"];
+            $user_id = $row["user_id"];
 
             // Verify the submitted password against the hashed password
             if (password_verify($password, $hashed_password)) {
@@ -67,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Redirect back to the login page, regardless of success or failure
-header("Location: login.php");
+// Redirect back to the login page, passing the error message in the query parameter
+header("Location: login.php?error=" . urlencode($_SESSION["error"]));
 exit();
 ?>

@@ -50,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->close();
     }
 
-    // Redirect back to the login page
-    header("Location: login.php");
+    // Redirect back to the login page, passing the error message in the query parameter
+    header("Location: register.php?registration_message=" . urlencode($_SESSION["registration_message"]));
     exit();
 }
 ?>

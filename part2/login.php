@@ -1,3 +1,7 @@
+<?php
+session_start(); // Start the session
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,11 +32,6 @@
         </nav>
     </header>
     <main>
-        <?php // Display the error message, if any
-        if (isset($_SESSION["error"])) {
-            echo '<p style="color: white;">' . $_SESSION["error"] . "</p>";
-            unset($_SESSION["error"]); // Clear the error message after displaying it
-        } ?>
         <form action="login_process.php" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
@@ -42,6 +41,11 @@
 
             <button type="submit">Login</button>
         </form>
+        <?php // Display the error message, if any
+        if (isset($_SESSION["error"])) {
+            echo '<p>' . $_SESSION["error"] . "</p>";
+            unset($_SESSION["error"]); // Clear the error message after displaying it
+        } ?>
     </main>
     <footer>
         &copy; <?php echo date(
