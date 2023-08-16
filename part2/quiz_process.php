@@ -24,68 +24,107 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $answers = $_POST["answers"];
 
     // Calculate the user's quiz score
-    $quizScore = 0;
+    $quizScore = 0; // Initialize the quiz score
+    $totalQuestions = count($answers);
+
     foreach ($answers as $question_id => $selected_option) {
         $quizQuestionsSql = "SELECT correct_option FROM quiz_questions WHERE question_id = $question_id";
         $quizQuestionsResult = $conn->query($quizQuestionsSql);
 
         if ($quizQuestionsResult && $quizQuestionsResult->num_rows === 1) {
             $questionRow = $quizQuestionsResult->fetch_assoc();
-            $correct_option = $questionRow["correct_option"];
+            $correct_option = (int) $questionRow["correct_option"]; // Convert to integer
 
-            // Compare the selected option with the correct option
-            if ($selected_option === $correct_option) {
+            // Convert the selected option to integer for comparison
+            $selected_option_int = ($selected_option === 'a') ? 1 : (($selected_option === 'b') ? 2 : 3);
+
+            // Compare the selected option with the correct option (as integers)
+            if ($selected_option_int === $correct_option) {
                 $quizScore++;
             }
         }
     }
 
-    // Get the parent course ID from the quiz
-    $quizParentSql = "SELECT parent_id FROM eml WHERE content_id = $quiz_id";
-    $quizParentResult = $conn->query($quizParentSql);
+    // Calculate the percentage grade
+    $percentageGrade = ($quizScore / $totalQuestions) * 100;
 
-    if ($quizParentResult && $quizParentResult->num_rows === 1) {
-        $quizParentRow = $quizParentResult->fetch_assoc();
-        $course_id = $quizParentRow["parent_id"];
-
-        // Get the course name based on course_id
-        $courseNameSql = "SELECT content_title FROM eml WHERE content_id = $course_id";
-        $courseNameResult = $conn->query($courseNameSql);
-
-        if ($courseNameResult && $courseNameResult->num_rows === 1) {
-            $courseNameRow = $courseNameResult->fetch_assoc();
-            $course_name = $courseNameRow["content_title"];
-
-            // Insert a new grade into the "grades" table
-            $insertGradeSql = "INSERT INTO grades (user_id, course_name, grade) VALUES (?, ?, ?)";
-
-            // Create a prepared statement
-            $stmt = $conn->prepare($insertGradeSql);
-
-            if ($stmt) {
-                // Bind parameters and execute the statement
-                $stmt->bind_param("iss", $user_id, $course_name, $quizScore);
-
-                if ($stmt->execute()) {
-                    header("Location: grades.php"); // Redirect to the grades page after updating the grade
-                    exit();
-                } else {
-                    echo "Error inserting grade: " . $stmt->error;
-                }
-
-                // Close the statement
-                $stmt->close();
-            } else {
-                echo "Error preparing statement: " . $conn->error;
-            }
-        } else {
-            echo "Error fetching course name: " . $conn->error;
-        }
-    } else {
-        echo "Error fetching quiz parent information: " . $conn->error;
-    }
-} else {
-    header("Location: index.php"); // Redirect to the homepage or any other suitable page
-    exit();
-}
-?>
+     // Get the parent course ID from the quiz
+     $quizParentSql = "SELECT parent_id FROM eml WHERE content_id = $quiz_id";
+     $quizParentResult = $conn->query($quizParentSql);
+ 
+     if ($quizParentResult && $quizParentResult->num_rows === 1) {
+         $quizParentRow = $quizParentResult->fetch_assoc();
+         $course_id = $quizParentRow["parent_id"];
+ 
+         // Get the course name based on course_id
+         $courseNameSql = "SELECT content_title FROM eml WHERE content_id = $course_id";
+         $courseNameResult = $conn->query($courseNameSql);
+ 
+         if ($courseNameResult && $courseNameResult->num_rows === 1) {
+             $courseNameRow = $courseNameResult->fetch_assoc();
+             $course_name = $courseNameRow["content_title"];
+ 
+             // Check if the user has completed the quiz before
+             $existingGradeSql = "SELECT * FROM grades WHERE user_id = ? AND course_name = ?";
+             $existingGradeStmt = $conn->prepare($existingGradeSql);
+ 
+             if ($existingGradeStmt) {
+                 $existingGradeStmt->bind_param("is", $user_id, $course_name);
+                 $existingGradeStmt->execute();
+                 $existingGradeResult = $existingGradeStmt->get_result();
+ 
+                 if ($existingGradeResult->num_rows > 0) {
+                     // If an existing grade is found, update the grade
+                     $updateGradeSql = "UPDATE grades SET grade = ? WHERE user_id = ? AND course_name = ?";
+                     $updateGradeStmt = $conn->prepare($updateGradeSql);
+ 
+                     if ($updateGradeStmt) {
+                         $updateGradeStmt->bind_param("dis", $percentageGrade, $user_id, $course_name);
+ 
+                         if ($updateGradeStmt->execute()) {
+                             header("Location: grades.php");
+                             exit();
+                         } else {
+                             echo "Error updating grade: " . $updateGradeStmt->error;
+                         }
+ 
+                         $updateGradeStmt->close();
+                     } else {
+                         echo "Error preparing update statement: " . $conn->error;
+                     }
+                 }
+ 
+                 $existingGradeStmt->close();
+             } else {
+                 echo "Error preparing existing grade statement: " . $conn->error;
+             }
+ 
+             // If no existing grade is found, proceed with insertion
+             $insertGradeSql = "INSERT INTO grades (user_id, course_name, grade) VALUES (?, ?, ?)";
+             $insertGradeStmt = $conn->prepare($insertGradeSql);
+ 
+             if ($insertGradeStmt) {
+                 $insertGradeStmt->bind_param("isd", $user_id, $course_name, $percentageGrade);
+ 
+                 if ($insertGradeStmt->execute()) {
+                     header("Location: grades.php");
+                     exit();
+                 } else {
+                     echo "Error inserting grade: " . $insertGradeStmt->error;
+                 }
+ 
+                 $insertGradeStmt->close();
+             } else {
+                 echo "Error preparing insertion statement: " . $conn->error;
+             }
+         } else {
+             echo "Error fetching course name: " . $conn->error;
+         }
+     } else {
+         echo "Error fetching quiz parent information: " . $conn->error;
+     }
+ } else {
+     header("Location: index.php");
+     exit();
+ }
+ ?>

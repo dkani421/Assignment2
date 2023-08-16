@@ -165,26 +165,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
         ?>
 
-    <h1>Admin Documentation for EML Content Formatting and Upload</h1>
+        <h2 id="introduction">Introduction</h2>
         <p>
-            Below is an example of the structure for an EML document that can be uploaded by admins and parsed by the system.
+            The EML File Upload feature allows administrators to share educational content with ease. EML files are structured documents that contain information about various educational components such as courses, lessons, and quizzes. Follow the steps below to prepare and upload your EML file.
         </p>
 
-        <h2>EML Document Structure</h2>
+        <h2 id="eml-document-structure">EML Document Structure</h2>
         <pre>
-            &lt;Document&gt;
-                &lt;Contents&gt;
-                    &lt;section&gt;
-                        &lt;content_type&gt;only one of (course,lesson,quiz)&lt;/content_type&gt;
-                        &lt;content_title&gt;title&lt;/content_title&gt;
-                        &lt;content_description&gt;description&lt;/content_description&gt;
-                        &lt;content&gt;content&lt;/content&gt;
-                        &lt;parent_id&gt;If course, Leave blank. If lesson or quiz, use matching parent id.&lt;/parent_id&gt;
-                        &lt;course_id&gt;&lt;/course_id&gt;
-                    &lt;/section&gt;
-                &lt;/Contents&gt;
-            &lt;/Document&gt;
-            </pre>
+        &lt;Document&gt;
+            &lt;Contents&gt;
+                &lt;section&gt;
+                    &lt;content_type&gt;only one of (course, lesson, quiz)&lt;/content_type&gt;
+                    &lt;content_title&gt;title&lt;/content_title&gt;
+                    &lt;content_description&gt;description&lt;/content_description&gt;
+                    &lt;content&gt;content&lt;/content&gt;
+                    &lt;parent_id&gt;If course, leave blank. If lesson or quiz, use matching parent id.&lt;/parent_id&gt;
+                    &lt;course_id&gt;&lt;/course_id&gt;
+                &lt;/section&gt;
+            &lt;/Contents&gt;
+        &lt;/Document&gt;
+        </pre>
+
+        <h2 id="eml-elements">Elements</h2>
+                <ul>
+                    <li>&lt;content_type&gt;: Specify the type of content (course, lesson, or quiz).</li>
+                    <li>&lt;content_title&gt;: Provide a title for the content.</li>
+                    <li>&lt;content_description&gt;: Add a description for the content.</li>
+                    <li>&lt;content&gt;: Insert the actual content, such as text or materials.</li>
+                    <li>&lt;parent_id&gt;: For lessons or quizzes, use the parent content's ID. Leave blank for courses.</li>
+                    <li>&lt;course_id&gt;: Provide the course ID if applicable.</li>
+                </ul>
+
+                <h2 id="uploading-an-eml-file">Uploading an EML File</h2>
+                <ol>
+                    <li><strong>Login</strong>: Make sure you are logged in as an administrator. If not, contact your system administrator to grant you access.</li>
+                    <li><strong>Access the Upload Page</strong>: From the main navigation, go to the "Admin" section and find the "Upload EML File" section.</li>
+                    <li><strong>Select a File</strong>: Click on the "Choose File" button to select the EML file you want to upload from your computer.</li>
+                    <li><strong>Upload</strong>: Click the "Upload" button to start the upload process.</li>
+                    <li><strong>Confirmation</strong>: After the upload is successful, you will see a confirmation message indicating that the file was uploaded. If there is an error during the upload, an error message will be displayed.</li>
+                </ol>
+
+                <p>That's it! You've successfully uploaded an EML file to the system. The content will be parsed and added to the system's database for users to access.</p>
+
+                <p>Remember to format your EML files correctly using the provided structure to ensure smooth uploading and parsing.</p>
+
+                <p>For any issues or questions, please reach out to the system administrator or support team.</p>
 
         <h2>Upload EML File</h2>
         <form action="admin.php" method="POST" enctype="multipart/form-data">

@@ -88,7 +88,7 @@ if (isset($_GET["course_id"]) && is_numeric($_GET["course_id"])) {
     <?php foreach ($lessons as $lesson) {
         echo "<h3>" . $lesson["content_title"] . "</h3>";
         echo "<p>" . $lesson["content_description"] . "</p>";
-        echo "<p>Content: " . $lesson["content"] . "</p>";
+        echo "<p>" . $lesson["content"] . "</p>";
         echo "<p>Date Created: " . $lesson["date_created"] . "</p>";
     } ?>
     <h2><?php echo $course_name; ?> Quizzes</h2>

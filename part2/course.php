@@ -70,7 +70,6 @@ if (!$result) {
             echo "<p>" . $row["content_description"] . "</p>";
             echo "<p>Course ID: " . $row["course_id"] . "</p>";
             echo "<p>Date Created: " . $row["date_created"] . "</p>";
-            echo "<p>Content: " . $row["content"] . "</p>";
         }
     } else {
         echo "No course data found.";
